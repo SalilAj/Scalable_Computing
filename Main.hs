@@ -13,15 +13,12 @@ main = do
     mainLoop sock
 
 mainLoop :: Socket -> IO ()
-mainLoop sock = do
-    conn <- accept sock     -- accept a connection and handle it
-
-    runConn conn            -- run our server's logic
-    mainLoop sock           -- repeat
+let mainLoop sock = do
+        conn <- accept sock     -- accept a connection and handle it
+        runConn conn            -- run our server's logic
+        mainLoop sock           -- repeat
 
 runConn :: (Socket, SockAddr) -> IO ()
-runConn (sock, _) = do
-  hdl <- socketToHandle sock ReadWriteMode
-  hSetBuffering hdl NoBuffering
-  hPutStrLn hdl "Hello!"
-  hClose hdl
+let runConn (sock, _) = do
+        send sock "Hello!\n"
+        close sock
