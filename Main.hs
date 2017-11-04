@@ -1,8 +1,6 @@
 module Main where
 
 import Network.Socket
-import System.IO
-import Control.Concurrent
 
 main :: IO ()
 main = do
@@ -15,13 +13,10 @@ main = do
 mainLoop :: Socket -> IO ()
 mainLoop sock = do
     conn <- accept sock     -- accept a connection and handle it
-
     runConn conn            -- run our server's logic
     mainLoop sock           -- repeat
 
 runConn :: (Socket, SockAddr) -> IO ()
 runConn (sock, _) = do
-  hdl <- socketToHandle sock ReadWriteMode
-  hSetBuffering hdl NoBuffering
-  hPutStrLn hdl "Hello!"
-  hClose hdl
+    send sock "Hello!\n"
+    close sock
