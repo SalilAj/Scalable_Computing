@@ -19,4 +19,5 @@ mainLoop sock = do
 runConn :: (Socket, SockAddr) -> IO ()
 runConn (sock, _) = do
     send sock "Hello!\n"
+    print "Got it"
     close sock
